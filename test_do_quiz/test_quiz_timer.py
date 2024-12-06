@@ -22,11 +22,13 @@ class TestQuizTimer(unittest.TestCase):
     def test_start_timer(self):
         self.assertIsNone(self.timer.start_time)
         self.assertEqual(self.timer.duration, 0)
-        self.timer.start_timer(6)
+        self.timer.start_timer(60)
         self.assertIsNotNone(self.timer.start_time) # test timer starts successfully
-        self.assertEqual(self.timer.duration, 6)
-        
+        self.assertEqual(self.timer.duration, 60)
+        self.timer.start_timer(60)
+            
     def test_check_time_remaining(self):
+        self.timer.end_timer()
         self.timer.start_timer(30)
         time.sleep(5)
         self.assertEqual(self.timer.duration, 30)
@@ -34,5 +36,6 @@ class TestQuizTimer(unittest.TestCase):
         self.assertGreaterEqual(self.timer.check_time_remaining(), 15)
         time.sleep(3)
         self.assertLessEqual(self.timer.check_time_remaining(), 22)
+
         
 # unittest.main(argv=[''], verbosity=2, exit=False)        

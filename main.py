@@ -121,10 +121,9 @@ while quiz.current_question_index < len(quiz.questions):
     
 # close timer and quiz
 timer.end_timer()  
-quiz.end_quiz() 
+print(quiz.end_quiz()) 
 if quiz.wrong_answers == []:
     print('Congratulations! You got full points!') # set message to users who get full scores
 else:
-    wrong_answers = quiz.get_wrong_answers() # show details of wrong answers
-    print(wrong_answers)
+    print(quiz.get_wrong_answers()) # show details of wrong answers
 
