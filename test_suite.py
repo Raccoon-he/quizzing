@@ -10,8 +10,11 @@ def test_suite1():
     result1 = unittest.TestResult()
     suite1.addTest(TestQuestionLoader('test_category'))
     suite1.addTest(TestQuestionLoader('test_difficulty'))
+    suite1.addTest(TestQuestionLoader('test_random_question'))
     suite1.addTest(TestQuestionManager('test_add_question'))
     suite1.addTest(TestQuestionManager('test_remove_question'))
+    suite1.addTest(TestQuestionManager('test_update_question'))
+    suite1.addTest(TestQuestionManager('test_get_question'))
     runner = unittest.TextTestRunner()
     print(runner.run(suite1))
 

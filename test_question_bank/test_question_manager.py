@@ -44,6 +44,13 @@ class TestQuestionManager(unittest.TestCase):
                 "answer": "C",
                 "difficulty": "easy",
                 "category": "technology"
+            },
+            {
+                "id": 24,
+                "text": "Which company owns Android? A) Apple B) Microsoft C) Google D) Samsung",
+                "answer": "C",
+                "difficulty": "easy",
+                "category": "technology"
             }
         ]
 
@@ -66,6 +73,8 @@ class TestQuestionManager(unittest.TestCase):
         self.manager.add_question(self.questions[4])
         self.assertEqual(len(self.manager.question_bank), 5)
         self.assertEqual(self.manager.question_bank[4]['id'], 24)
+        with self.assertRaises(ValueError):
+            self.manager.add_question(self.questions[5])
 
     def test_remove_question(self):
         self.test_add_question()
@@ -76,5 +85,25 @@ class TestQuestionManager(unittest.TestCase):
         self.assertEqual(len(self.manager.question_bank), 3)
         self.assertEqual(self.manager.question_bank[2]['id'], 23)
 
+    def test_update_question(self):
+        self.test_add_question()
+        self.manager.update_question(20, {"answer": "C","difficulty": "hard","category": "technology"})
+        self.assertEqual(self.manager.question_bank[0]['answer'], 'C')
+        self.assertEqual(self.manager.question_bank[0]['difficulty'], 'hard')
+        self.assertEqual(self.manager.question_bank[0]['category'], 'technology')
+        self.manager.update_question(24, {"answer": "D", "difficulty": "medium"})
+        self.assertEqual(self.manager.question_bank[4]['answer'], 'D')
+        self.assertEqual(self.manager.question_bank[4]['difficulty'], 'medium')
+
+    def test_get_question(self):
+        self.test_add_question()
+        self.assertEqual(self.manager.get_question_by_id(20)['answer'], 'B')
+        self.assertEqual(self.manager.get_question_by_id(21)['difficulty'], 'easy')
+        self.assertEqual(self.manager.get_question_by_id(22)['category'], 'geography')
+        self.assertEqual(self.manager.get_question_by_id(23)['answer'], 'B')
+        self.assertEqual(self.manager.get_question_by_id(24)['difficulty'], 'easy')
+        self.assertEqual(len(self.manager.list_all_questions()), 5)
+        with self.assertRaises(ValueError):
+            self.manager.get_question_by_id(25)
 
 
