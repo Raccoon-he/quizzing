@@ -53,11 +53,19 @@ class TestQuizSession(unittest.TestCase):
         self.assertEqual(self.quiz.current_question_index, 1)
         self.assertEqual(self.quiz.wrong_answers[0]['users_answer'], 'B')
         self.assertEqual(self.quiz.questions[self.quiz.current_question_index]['answer'], 'A') # next correct answer
+        
         self.quiz.submit_answer('A') # Question 2: correct
         self.assertEqual(self.quiz.score, 1)
         self.assertEqual(self.quiz.current_question_index, 2)
         self.assertEqual(len(self.quiz.wrong_answers), 1)
         self.assertEqual(self.quiz.questions[self.quiz.current_question_index]['answer'], 'B')
+  
+        self.quiz.submit_answer('E') # Question 3: invalid
+        self.assertEqual(self.quiz.score, 1)
+        self.assertEqual(self.quiz.current_question_index, 2)
+        self.assertEqual(len(self.quiz.wrong_answers), 1)
+        self.assertEqual(self.quiz.questions[self.quiz.current_question_index]['answer'], 'B')
+        
         self.quiz.submit_answer('C') # Question 3: wrong
         self.assertEqual(self.quiz.score, 1)
         self.assertEqual(self.quiz.current_question_index, 3)
@@ -69,8 +77,23 @@ class TestQuizSession(unittest.TestCase):
         self.quiz.submit_answer('B') # wrong
         self.quiz.submit_answer('B')
         self.assertEqual(self.quiz.score, 2)
+        self.assertEqual(self.quiz.end_quiz(), "Score you got is: 2.\n")
         self.assertEqual(len(self.quiz.wrong_answers), 1)
         self.assertEqual(self.quiz.wrong_answers[0]['answer'], 'A')
         self.assertEqual(self.quiz.wrong_answers[0]['users_answer'], 'B')
+        correct_output = (
+            '------ Questions your answered wrong ------\n'
+            'Question 2\n'
+            'What chemical element has the symbol Au? A) Gold B) Silver C) Iron D) Copper\n'
+            'Category: Science\n'
+            'Difficulty: Easy\n'
+            'Answer: A\n'
+            'Your answer: B\n'
+            '------ Above are all ------\n'
+            'Good luck for next time!'
+        )
+        self.assertEqual(self.quiz.get_wrong_answers(), correct_output)
+        
+        
         
 # unittest.main(argv=[''], verbosity=2, exit=False)
