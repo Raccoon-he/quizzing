@@ -1,4 +1,5 @@
 import unittest
+
 from quizzing.question_bank.question_manager import questionmanager as qm
 
 class TestQuestionManager(unittest.TestCase):
@@ -73,8 +74,7 @@ class TestQuestionManager(unittest.TestCase):
         self.manager.add_question(self.questions[4])
         self.assertEqual(len(self.manager.question_bank), 5)
         self.assertEqual(self.manager.question_bank[4]['id'], 24)
-        with self.assertRaises(ValueError):
-            self.manager.add_question(self.questions[5])
+        self.assertEqual(self.manager.add_question(self.questions[5]), None)
 
     def test_remove_question(self):
         self.test_add_question()
@@ -84,6 +84,8 @@ class TestQuestionManager(unittest.TestCase):
         self.manager.remove_question(24)
         self.assertEqual(len(self.manager.question_bank), 3)
         self.assertEqual(self.manager.question_bank[2]['id'], 23)
+        self.assertEqual(self.manager.remove_question(25), None)
+
 
     def test_update_question(self):
         self.test_add_question()
@@ -94,6 +96,7 @@ class TestQuestionManager(unittest.TestCase):
         self.manager.update_question(24, {"answer": "D", "difficulty": "medium"})
         self.assertEqual(self.manager.question_bank[4]['answer'], 'D')
         self.assertEqual(self.manager.question_bank[4]['difficulty'], 'medium')
+        self.assertEqual(self.manager.update_question(25,{"answer": "D", "difficulty": "medium"}), None)
 
     def test_get_question(self):
         self.test_add_question()
@@ -103,7 +106,6 @@ class TestQuestionManager(unittest.TestCase):
         self.assertEqual(self.manager.get_question_by_id(23)['answer'], 'B')
         self.assertEqual(self.manager.get_question_by_id(24)['difficulty'], 'easy')
         self.assertEqual(len(self.manager.list_all_questions()), 5)
-        with self.assertRaises(ValueError):
-            self.manager.get_question_by_id(25)
+        self.assertEqual(self.manager.get_question_by_id(25), None)
 
 
